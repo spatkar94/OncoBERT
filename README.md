@@ -1,5 +1,5 @@
 # OncoBERT: A Language Model for Interpreting Cancer Mutation Patterns and Therapy Response from Clinical Sequencing Data
-![](data/oncobert_outline.png)
+
 ## Overview 
 The code in this repository can be used to construct a BERT-stype language model for interpreting cancer mutation data and analyzing complex mutation co-occurence patterns.
 
