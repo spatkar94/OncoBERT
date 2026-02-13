@@ -1,5 +1,5 @@
-
-
+# Deciphering Cancer Mutation Patterns and Treatment Response using Masked Language Models
+![](data/oncobert_outline.png)
 ## Overview
 
 **OncoBERT** is a language model that learns context-aware vector representations of cancer somatic mutations through self-supervised analysis of large-scale genome sequencing datasets. These learned vector representations enable:
@@ -8,7 +8,7 @@
 - Discovery of recurrent mutation co-occurrence patterns  
 - Prediction of treatment response
 
-![](data/oncobert_outline.png)
+
 
 
 
