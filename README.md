@@ -8,7 +8,7 @@
 - Discovery of recurrent mutation co-occurrence patterns  
 - Prediction of treatment response
 
-()[data/oncobert_outline.png]
+![](data/oncobert_outline.png)
 
 Inspired by recent advances in LLMs, OncoBERT treats mutation profiles of tumors as "sentences" where genes represent "tokens", and their ordering captures crucial contextual information about mutations. The final model outputs a **256-dimensional embedding vector** that encodes the mutational landscape of each tumor sample.
 
