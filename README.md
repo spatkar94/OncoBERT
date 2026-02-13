@@ -2,20 +2,29 @@
 
 ## Overview
 
-**OncoBERT** is a deep representation learning framework that transforms sparse somatic mutation profiles of tumors into dense, context-aware vector embeddings. These embeddings enable:
+**OncoBERT** is a language model that learns dense, context-aware representations of somatic mutations through analysis of large-scale genome sequencing datasets. These learned representations enable:
 
-- Clustering of tumor samples into molecular subtypes  
+- Clustering of tumor samples into distinct molecular subtypes  
 - Discovery of recurrent mutation co-occurrence patterns  
 - Prediction of treatment response
 
 ![](data/oncobert_outline.png)
 
-Inspired by recent advances in LLMs, OncoBERT treats mutation profiles of tumors as "sentences" where genes represent "tokens", and their ordering captures crucial contextual information about mutations. The final model outputs a **256-dimensional embedding vector** that encodes the mutational landscape of each tumor sample.
+
 
 ---
 ## Input Data Preparation
+Prepare somatic mutation data as a tabular file where each row rempresents a tumor sample and each column represents a protein coding gene. Each entry encodes the mutation status of a gene. 1: presence of at least one non-silent mutation (i.e., missense, nonsense, frameshift, indel), 0 = wildtype, */nan = not profiled. 
+```
+sample_id, TP53, KRAS, EGFR, ...
+S1, 1, 0, 0
+S2, 1, 1, 0
+S3, 0, 0, 1
+```
+
 
 ## Training
+Inspired by recent advances in LLMs, OncoBERT interprets mutation profiles of tumors as "sentences" where genes represent "tokens", and their ordering captures crucial contextual information about mutations. The model is trained to recognize various mutation patterns via masked language modeling, a self-supervised learning technique designed to XX. The final model outputs a **256-dimensional embedding vector** that encodes the mutational landscape of each tumor sample. To run training on your own cohort 
 ## Inference
 ## Questions and Issues
 If you find any bugs or have any questions about this code please contact: [Sushant Patkar](patkar.sushant@nih.gov)
