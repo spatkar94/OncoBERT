@@ -1,16 +1,15 @@
-# Deciphering Cancer Mutation Patterns and Treatment Response using Masked Language Models
-![](data/oncobert_outline.png)
+
 ## Overview
 
-**OncoBERT** is a language model that learns context-aware vector representations of cancer somatic mutations through self-supervised analysis of large-scale genome sequencing datasets. These learned vector representations enable:
+**OncoBERT** is a language model that learns contextual representations cancer somatic mutations from large-scale clinical sequencing data. These learned vector representations enable:
 
 - Clustering of tumor samples into distinct molecular subtypes  
 - Discovery of recurrent mutation co-occurrence patterns  
 - Prediction of treatment response
 
+![](data/oncobert_outline.png)
 
-
-
+OncoBERT interprets mutation profiles of tumors as "sentences" where genes represent "tokens", and their ordering captures crucial contextual information about mutations. The model is trained to recognize various mutation patterns via masked language modeling, a self-supervised learning technique designed to interpret natural langauge. The final model outputs a **256-dimensional embedding vector** that encodes the mutational context of each tumor sample. 
 
 ---
 ## Input Data Preparation
@@ -24,10 +23,17 @@ S3, 0, 0, 1
 
 
 ## Training
-Inspired by recent advances in LLMs, OncoBERT interprets mutation profiles of tumors as "sentences" where genes represent "tokens", and their ordering captures crucial contextual information about mutations. The model is trained to recognize various mutation patterns via masked language modeling, a self-supervised learning technique designed to XX. The final model outputs a **256-dimensional embedding vector** that encodes the mutational landscape of each tumor sample. To run training on your own cohort 
+To train OncoBERT from scratch on your own cohort, run the following:
+```
+```
+
 ## Inference
+To generate embeddings for your own cohort run the following:
+```
+```
 ## Questions and Issues
 If you find any bugs or have any questions about this code please contact: [Sushant Patkar](patkar.sushant@nih.gov)
+
 ## Citation
 
 ## Acknowledgments
