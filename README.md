@@ -1,26 +1,20 @@
-# OncoBERT: A Language Model for Interpreting Cancer Mutation Patterns and Therapy Response from Clinical Sequencing Data
+# OncoBERT: A Language Model for Deciphering Cancer Mutation Patterns and Therapy Response from Clinical Sequencing Data
 
 ## Overview
 
-**OncoBERT** is a deep representation learning framework that transforms sparse somatic mutation profiles into dense, context-aware vector embeddings. These embeddings enable:
+**OncoBERT** is a deep representation learning framework that transforms sparse somatic mutation profiles of tumors into dense, context-aware vector embeddings. These embeddings enable:
 
 - Clustering of tumor samples into molecular subtypes  
 - Discovery of recurrent mutation co-occurrence patterns  
-- Interpretation of complex genomic signatures  
-- Downstream prediction tasks (e.g., therapy response)
+- Prediction of treatment response
 
-Inspired by the architecture of **:contentReference[oaicite:0]{index=0}**, OncoBERT treats ordered mutation profiles as "sentences" and genes as "tokens", learning genomic context via self-supervised masked language modeling (MLM).
-
-The final model outputs a **256-dimensional embedding vector** that encodes the mutational landscape of each tumor sample.
+Inspired by recent advances in LLMs, OncoBERT treats mutation profiles of tumors as "sentences" where genes represent "tokens", and their ordering captures crucial contextual information about mutations. The final model outputs a **256-dimensional embedding vector** that encodes the mutational landscape of each tumor sample.
 
 ---
+## Input Data Preparation
 
-## Installation and prerequisites
-
-## How to use
-### Data Preparation
-### Training
-### Inference
+## Training
+## Inference
 ## Questions and Issues
 If you find any bugs or have any questions about this code please contact: [Sushant Patkar](patkar.sushant@nih.gov)
 ## Citation
