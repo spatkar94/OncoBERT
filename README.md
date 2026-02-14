@@ -9,8 +9,6 @@ OncoBERT is a language model designed to learn contextual representations cancer
 
 ![](data/oncobert_outline.png)
 
-OncoBERT interprets mutation profiles of tumors as "sentences" where genes represent "tokens", and their ordering captures crucial contextual information about mutations. The model is trained to recognize various mutation patterns via masked language modeling, a self-supervised learning technique designed to interpret natural langauge. The final model outputs a **256-dimensional embedding vector** that encodes the mutational context of each tumor sample. 
-
 ---
 ## Input Data Preparation
 Prepare somatic mutation data as a tabular file where each row rempresents a tumor sample and each column represents a protein coding gene. Each entry encodes the mutation status of a gene. 1: presence of at least one non-silent mutation (i.e., missense, nonsense, frameshift, indel), 0 = wildtype, */nan = not profiled. 
