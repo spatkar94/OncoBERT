@@ -14,24 +14,24 @@ import pickle
 import os
 device = torch.device('cuda:0')
 
-#def save_esm_embeddings_to_h5py():
-#    # Option 1 using PLM
-#    files = glob.glob('/data/sushantpa/esm_embeddings/*.pt')
-#    embeddings = {}
-#    for i in tqdm(range(len(files))):
-#        match = re.search(r'GN=([\w\d]+)', files[i])
-#        if match:
-#            gn_value = match.group(1)
-#            embeddings[gn_value] = torch.load(files[i])['mean_representations'][33]
-#    gene_embeddings = torch.stack([embeddings[gene] for gene in embeddings.keys()],dim=0)
+def save_esm_embeddings_to_h5py(embeddings_loc):
+    # Option 1 using PLM
+    files = glob.glob(f'{embeddings_loc}/*.pt')
+    embeddings = {}
+    for i in tqdm(range(len(files))):
+        match = re.search(r'GN=([\w\d]+)', files[i])
+        if match:
+            gn_value = match.group(1)
+            embeddings[gn_value] = torch.load(files[i])['mean_representations'][33]
+    gene_embeddings = torch.stack([embeddings[gene] for gene in embeddings.keys()],dim=0)
 
-#    with h5py.File('/data/sushantpa/TCGA_tx/esm2_data.h5', 'w') as f:
+    with h5py.File('../data/mean_esm2_33M_embeddings.h5', 'w') as f:
         # Save the PyTorch tensor
-#        f.create_dataset('embeddings', data=gene_embeddings.cpu().numpy())
+        f.create_dataset('embeddings', data=gene_embeddings.cpu().numpy())
 
         # Save the Python list (by pickling it)
-#        pickled_list = pickle.dumps(list(embeddings.keys()))
-#        f.create_dataset('genes', data=np.void(pickled_list)) # Use np.void for arbitrary bytes
+        pickled_list = pickle.dumps(list(embeddings.keys()))
+        f.create_dataset('genes', data=np.void(pickled_list)) # Use np.void for arbitrary bytes
 
 
 def prepare_input_data(mafpath, saveloc = '.', savename = 'geniev18_non_syn_muts_extended_test.csv'):
@@ -68,7 +68,7 @@ def prepare_input_data(mafpath, saveloc = '.', savename = 'geniev18_non_syn_muts
     mut_matrix.to_csv(os.path.join(saveloc,savename),sep=",")
         
 # create gene embeddings lookup table from ESM2 Protein Language Model
-def get_plm_embeddings(genes, embeddings_path = 'data/mean_esm2_33M_embeddings.h5'):
+def get_plm_embeddings(genes, embeddings_path):
     # Option 1 using PLM
     
     with h5py.File(embeddings_path, 'r') as f:
@@ -196,7 +196,7 @@ def set_seed(seed):
 
     
 class MutationDataset(Dataset):
-    def __init__(self, X, context_length = 100, mincount = 5):
+    def __init__(self, X, plm_embedding_path, context_length = 100, mincount = 5):
         super().__init__()
         self.df = X.copy()
         
@@ -208,7 +208,7 @@ class MutationDataset(Dataset):
         #common, feat_embeddings = get_gpt3_5_embeddings(list(self.df.columns))
         
         #print("Using plm embeddings")
-        common, feat_embeddings = get_plm_embeddings(list(self.df.columns))
+        common, feat_embeddings = get_plm_embeddings(list(self.df.columns), embeddings_path=plm_embedding_path)
 
         #filter out genes without embeddings
         self.df = self.df[common]

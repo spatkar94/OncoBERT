@@ -24,19 +24,28 @@ from oncobert.utils import prepare_mutation_data
 
 prepare_input_data(mafpath = '/path/to/maf_file.txt', saveloc = '.', savename = 'yourfilename.txt')
 ```
+## Extracting Pretrained Protein Language Model Embeddings
+To extract ESM2 protein language model embeddings for each protein coding gene, follow instructions shown [here](https://github.com/facebookresearch/esm). Finally run the following script to merge and save all embeddings into one tensor:
+```python
+from oncobert.utils import save_esm_embeddings_to_h5py
+
+save_esm_embeddings_to_h5py(embeddings_loc = '/path/to/saved/embeddings/*.pt')
+```
 
 ## Training
 To train OncoBERT from scratch on your own somatic mutation dataset, run the following script:
 ```
-python train.py [-h] [--mut_data MUT_DATA] [--save_loc SAVE_LOC] [--num_epochs NUM_EPOCHS] [--context_length CONTEXT_LENGTH] [--lr LR]
-                [--batch_size BATCH_SIZE] [--embed_dim EMBED_DIM] [--num_layers NUM_LAYERS] [--num_workers NUM_WORKERS]
-                [--mask_fraction MASK_FRACTION]
+python train.py [-h] [--mut_data MUT_DATA] [--plm_embeddings PLM_EMBEDDINGS] [--save_loc SAVE_LOC] [--num_epochs NUM_EPOCHS]
+                [--context_length CONTEXT_LENGTH] [--lr LR] [--batch_size BATCH_SIZE] [--embed_dim EMBED_DIM] [--num_layers NUM_LAYERS]
+                [--num_workers NUM_WORKERS] [--mask_fraction MASK_FRACTION]
 
 Training script arguments
 
 options:
   -h, --help            show this help message and exit
   --mut_data MUT_DATA   Path to mutation data (saved in tabular csv format)
+  --plm_embeddings PLM_EMBEDDINGS
+                        Path to h5 file storing ESM2 protein language model embeddings
   --save_loc SAVE_LOC   Path to where model weights are saved
   --num_epochs NUM_EPOCHS
                         Number of training epochs (default: 500)
@@ -56,19 +65,22 @@ options:
 ```
 
 ## Inference
-To generate contextual embeddings for somatic mutation profiles and optionally classify tumor samples into distinct OncoBERT-defined mutation subtypes, run the following scripts:
+To generate contextual embeddings of somatic mutations and optionally classify tumor samples into distinct mutation subtypes, run the following scripts:
 ```
-python inference.py [-h] [--mut_data MUT_DATA] [--checkpoint CHECKPOINT] [--save_loc SAVE_LOC] [--savename SAVENAME]
-                    [--context_length CONTEXT_LENGTH] [--embed_dim EMBED_DIM] [--num_layers NUM_LAYERS] [--classifier_chkpt CLASSIFIER_CHKPT]
+python inference.py [-h] [--mut_data MUT_DATA] [--plm_embeddings PLM_EMBEDDINGS] [--checkpoint CHECKPOINT] [--save_loc SAVE_LOC]
+                    [--savename SAVENAME] [--context_length CONTEXT_LENGTH] [--embed_dim EMBED_DIM] [--num_layers NUM_LAYERS]
+                    [--classifier_chkpt CLASSIFIER_CHKPT]
 
-OncoBERT inference script arguments
+Inference script arguments
 
 options:
   -h, --help            show this help message and exit
   --mut_data MUT_DATA   Path to mutation data (saved in tabular csv format)
+  --plm_embeddings PLM_EMBEDDINGS
+                        Path to h5 file storing ESM2 protein language model embeddings
   --checkpoint CHECKPOINT
-                        Path where OncoBERT weights are saved
-  --save_loc SAVE_LOC   Path to where embeddings will be saved
+                        Path to checkpoint file where OncoBERT weights are saved
+  --save_loc SAVE_LOC   Location where embeddings will be saved
   --savename SAVENAME   name of embeddings file (e.g., bert_embeddings.h5)
   --context_length CONTEXT_LENGTH
                         sequence/context length (default: 50)
@@ -86,6 +98,4 @@ If you find any bugs or have any questions about this code please contact: [Sush
 If you found OncoBERT useful in your own work, please consider citing:
 ```
 ```
-
-## Acknowledgments
 

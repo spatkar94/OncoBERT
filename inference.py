@@ -4,16 +4,19 @@ import argparse
 import anndata as ad
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="OncoBERT inference script arguments")
+    parser = argparse.ArgumentParser(description="Inference script arguments")
 
     parser.add_argument("--mut_data", type=str,
                         help="Path to mutation data (saved in tabular csv format)")
     
+    parser.add_argument('--plm_embeddings', type=str,
+                        help='Path to h5 file storing ESM2 protein language model embeddings')
+    
     parser.add_argument("--checkpoint", type=str,
-                        help="Path where OncoBERT weights are saved")
+                        help="Path to checkpoint file where OncoBERT weights are saved")
     
     parser.add_argument("--save_loc", type=str, default='.',
-                        help="Path to where embeddings will be saved")
+                        help="Location where embeddings will be saved")
     
     parser.add_argument("--savename", type=str,
                         help="name of embeddings file (e.g., bert_embeddings.h5)")
@@ -36,12 +39,16 @@ def parse_args():
     
 
 if __name__ == '__main__':
-    torch.manual_seed(42)
+    set_seed(42)
     args = parse_args()
     mut_df = pd.read_csv(args['mut_data'], index_col=0)
 
     # Initialize dataset, model and training parameters
-    mut_dataset = MutationDataset(mut_df, context_length=args['context_length'], mincount=1)
+    mut_dataset = MutationDataset(mut_df, 
+                                  plm_embedding_path=args['plm_embeddings'],
+                                  context_length=args['context_length'], 
+                                  mincount=1 
+                                  )
 
     print(f'vocabulary size: {mut_dataset.df.shape[1]} \nnumber of sequences: {mut_dataset.df.shape[0]}')
 

@@ -61,6 +61,9 @@ def parse_args():
     parser.add_argument("--mut_data", type=str, default=None,
                         help="Path to mutation data (saved in tabular csv format)")
     
+    parser.add_argument('--plm_embeddings', type=str,
+                        help='Path to h5 file storing ESM2 protein language model embeddings')
+    
     parser.add_argument("--save_loc", type=str, default=None,
                         help="Path to where model weights are saved")
 
@@ -95,7 +98,7 @@ def parse_args():
 
 if __name__ == '__main__':
     args = parse_args()
-    set_seed(0)
+    set_seed(42)
     # AACR GENIE
     binary_df_large = pd.read_csv(args['mut_data'], index_col=0)
     source = np.array([x.split('-')[1] for x in binary_df_large.index])
@@ -107,7 +110,11 @@ if __name__ == '__main__':
     #binary_df_large = binary_df_large.iloc[idx,:]
 
     # Initialize dataset, model and training parameters
-    mut_dataset = MutationDataset(binary_df_large, context_length=args['context_length'], mincount=1)
+    mut_dataset = MutationDataset(binary_df_large,
+                                  plm_embedding_path=args['plm_embeddings'],
+                                  context_length=args['context_length'], 
+                                  mincount=1
+                                  )
     
     print(f'vocabulary size: {mut_dataset.df.shape[1]} \nnumber of sequences: {mut_dataset.df.shape[0]}')
 
