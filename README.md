@@ -11,7 +11,7 @@ OncoBERT is a language model that learns contextual representations cancer somat
 
 ---
 ## Input Data Preparation
-Prepare somatic mutation data as a tabular file where each row rempresents a tumor sample and each column represents a protein coding gene. Each entry encodes the mutation status of a gene. 1: presence of at least one non-silent mutation (i.e., missense, nonsense, frameshift, indel), 0 = wildtype, */nan = not profiled. 
+Prepare somatic mutation data as a tabular dataframe where each row rempresents a tumor sample and each column represents a protein coding gene. Each entry encodes the mutation status of a gene. 1: presence of at least one non-silent mutation (i.e., missense, nonsense, frameshift, indel), 0 = wildtype, */nan = not profiled. 
 ```
 sample_id, TP53, KRAS, EGFR, ...
 S1, 1, 0, 0
@@ -22,7 +22,7 @@ Given somatic mutation calls from a cohort saved in mutation annotation format (
 ```python
 from oncobert.utils import prepare_mutation_data
 
-prepare_input_data(mafpath = '/path/to/maf_file.txt', saveloc = '.', savename = 'yourfilename.txt')
+prepare_input_data(mafpath = '/path/to/maf_file.txt', saveloc = '.', savename = 'mutation_data.csv')
 ```
 ## Extracting Pretrained Protein Language Model Embeddings
 To extract ESM2 protein language model embeddings for each protein coding gene, follow instructions shown [here](https://github.com/facebookresearch/esm). Finally run the following script to merge and save all embeddings into one tensor:
