@@ -1,5 +1,7 @@
 ## OncoBERT - A Language Model for Decoding Cancer Mutation Patterns
-<img src="imgs/logo.png" width="720" vertical-align="middle">
+<div style="text-align: center;">
+    <img width="100%" src="imgs/logo.png">
+</div>
 
 OncoBERT is a masked language model that learns contextual representations of cancer somatic mutations from large-scale clinical sequencing data. These learned vector representations:
 * **Reveal** clinically relevant mutational contexts
