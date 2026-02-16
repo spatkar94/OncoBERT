@@ -80,8 +80,8 @@ options:
                         Path to h5 file storing ESM2 protein language model embeddings
   --checkpoint CHECKPOINT
                         Path to checkpoint file where OncoBERT weights are saved
-  --save_loc SAVE_LOC   Location where embeddings will be saved
-  --savename SAVENAME   name of embeddings file (e.g., bert_embeddings.h5)
+  --save_loc SAVE_LOC   Location where OncoBERT embeddings will be saved
+  --savename SAVENAME   name of anndata file holding all OncoBERT-generated embeddings (e.g., bert_embeddings.h5)
   --context_length CONTEXT_LENGTH
                         sequence/context length (default: 50)
   --embed_dim EMBED_DIM
