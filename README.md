@@ -1,5 +1,5 @@
 ## OncoBERT - A Language Model for Decoding Cancer Mutation Patterns
-<div style="text-align: center;">
+<div align = "center">
     <img width="70%" src="imgs/logo.png">
 </div>
 
