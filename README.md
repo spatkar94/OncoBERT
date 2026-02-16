@@ -1,13 +1,14 @@
 # OncoBERT
 ## Overview
 
+<img align="left" src="imgs/logo.png" width="250px"/>
 OncoBERT is a language model that learns contextual representations cancer somatic mutations from large-scale clinical sequencing data. These learned vector representations:
 
 - Enable clustering of tumor samples into distinct molecular subtypes  
 - Reveal clinically relevant mutational contexts
 - Enhance prediction of treatment response
 
-![](data/oncobert_outline.png)
+![](imgs/oncobert_outline.png)
 
 ---
 ## Input Data Preparation
