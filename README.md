@@ -1,5 +1,5 @@
 
-## <img src="imgs/logo.png" width="40" vertical-align="middle"> 
+## <img src="imgs/logo.png" width="250" vertical-align="middle"> 
 
 ### Overview
 
