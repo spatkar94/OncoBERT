@@ -15,19 +15,19 @@ OncoBERT is a masked language model that learns contextual representations of ca
 
 1. **Create the environment:**
    ```bash
-   conda create -n myenv python=3.9 -y
+   conda create -n oncobert python=3.9 -y
    ```
 
 2. **Activate the environment:**
    ```bash
-   conda activate myenv
+   conda activate oncobert
    ```
 
 3. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
-   
+
 ## Input Data Preparation
 Prepare somatic mutation data as a tabular dataframe where each row rempresents a tumor sample and each column represents a protein coding gene. Each entry encodes the mutation status of a gene. 1: presence of at least one non-silent mutation (i.e., missense, nonsense, frameshift, indel), 0 = wildtype, */nan = not profiled. 
 ```
