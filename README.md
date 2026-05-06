@@ -116,5 +116,14 @@ If you find any bugs or have any questions about this code please contact: [Sush
 ## Citation
 If you found OncoBERT useful in your own work, please consider citing:
 ```
+@article {Patkar2026.02.18.706658,
+	author = {Patkar, Sushant and Auslander, Noam and Harmon, Stephanie and Choyke, Peter and Turkbey, Baris},
+	title = {OncoBERT: Context-Aware Modeling of Somatic Mutations for Precision Oncology},
+	elocation-id = {2026.02.18.706658},
+	year = {2026},
+  doi = {10.64898/2026.02.18.706658},
+	publisher = {Cold Spring Harbor Laboratory},
+  journal = {bioRxiv}
+}
 ```
 
