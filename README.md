@@ -15,7 +15,7 @@ OncoBERT is a masked language model that learns contextual representations of ca
 
 1. **Create the environment:**
    ```bash
-   conda create -n oncobert python=3.9 -y
+   conda create -n oncobert python=3.10 -y
    ```
 
 2. **Activate the environment:**
