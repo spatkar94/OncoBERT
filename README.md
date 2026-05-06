@@ -8,6 +8,8 @@ OncoBERT is a masked language model that learns contextual representations of ca
 * **Enable clustering** of tumor samples into distinct molecular subtypes  
 * **Enable stratification** of patient responses to treatment
 
+This repository is based on the paper **"OncoBERT: Context-Aware Modeling of Somatic Mutations for Precision Oncology"** by Patkar, et al.
+You can read the paper here: [https://doi.org/10.64898/2026.02.18.706658](https://doi.org/10.64898/2026.02.18.706658)
 
 ![](imgs/oncobert_outline.png)
 
