@@ -30,7 +30,7 @@ positional embeddings are used. The final CLS vector is the sample
 representation; a patient representation is the mean of all corresponding
 sample-level CLS vectors.
 
-Default manuscript architecture:
+Default architecture:
 
 | Setting | Value |
 |---|---:|
