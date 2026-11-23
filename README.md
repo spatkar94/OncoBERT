@@ -1,11 +1,11 @@
 # OncoBERT
-## a general purpose foundation model for learning context-aware representations of somatic mutation profiles
+OncoBERT is a general-purpose foundation model that encode sparse somatic mutation profiles of tumors into rich context-aware vector representations. It is trained in a self-supervised fashion to predict the mutation status of randomly masked genes from the rest of the tumor's mutation profile, without relying on any prior biological or clinical annotations. 
 
 <div align="center">
   <img width="90%" src="imgs/oncobert_outline_revised.png" alt="Revised OncoBERT model overview">
 </div>
 
-OncoBERT is a foundation model trained to encode sparse somatic mutation profiles of tumors into rich context aware vector representations. It is trained in a self-supervised fashion to predict the mutation status of randomly masked genes from the rest of the tumor's mutation profile, without relying on any prior biological or clinical annotations. 
+
 ## Model
 
 Every sample contains the same ordered vocabulary of 200 commonly profiled
