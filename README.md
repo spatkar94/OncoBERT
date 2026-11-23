@@ -293,7 +293,7 @@ integer matrix as `esm2_ranks.npy`, `genept_ranks.npy`, or
 not loaded by `train_rank_encoder.py`, which deliberately consumes the frozen,
 auditable rank matrix.
 
-### Rank-encoder pretraining
+### 🚀 Rank-encoder pretraining
 
 ```bash
 python -m oncobert.train_rank_encoder \
