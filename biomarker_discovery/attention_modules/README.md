@@ -1,4 +1,4 @@
-# Cluster 2 attention-module interpretability
+# Cluster attention-module interpretability
 
 ## Analysis overview
 
