@@ -1,5 +1,5 @@
 # 🧬 OncoBERT
-OncoBERT is a general-purpose foundation model that learns broad contextual representations of somatic mutations through self-supervised learning on massive unlabeled genomic sequencing datasets.  
+OncoBERT is a general-purpose foundation model that learns contextual representations of somatic mutations through self-supervised learning on massive unlabeled genomic sequencing datasets.  
 
 <br><br>
 
