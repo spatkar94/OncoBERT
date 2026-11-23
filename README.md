@@ -310,7 +310,7 @@ accuracy, MAE, RMSE, and CLS embeddings. It also exports unmasked sample CLS
 embeddings and patient means to `embeddings.h5`, so a completed pretraining run
 already performs inference on every prepared sample.
 
-### Rank-encoder inference on another cohort
+### 🔍 Rank-encoder inference on another cohort
 
 Construct the new cohort's binary nonsynonymous shared-200 profiles and compute
 ranks with the *same* saved network, restart probability, gene order, and tie
