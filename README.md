@@ -8,7 +8,7 @@ OncoBERT is a general-purpose foundation model that learns broad contextual repr
 
 ## Model
 
-Every sample contains the same ordered vocabulary of 200 commonly profiled
+Every sample contains the same set of 200 commonly profiled
 genes. For gene `g`, the input token is
 
 ```text
