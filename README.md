@@ -152,7 +152,7 @@ preparation_summary.json
 ```bash
 python train.py \
   --prepared prepared/shared200 \
-  --output runs/oncobert \
+  --output oncobert_run \
   --device cuda:0 \
   --epochs 100 \
   --batch-size 64
@@ -163,7 +163,8 @@ eight heads, 15% uniform masking, AdamW with learning rate `1e-4`, and early
 stopping on fixed-mask validation cross-entropy. Use `--resume` to continue
 from `latest.pth`.
 
-The run directory contains:
+The command creates the requested output directory (`oncobert_run/` in this
+example), which contains:
 
 ```text
 best.pth                  minimum validation-loss checkpoint
@@ -299,7 +300,7 @@ python -m oncobert.train_rank_encoder \
   --prepared prepared/shared200 \
   --ranks prepared/shared200/esm2_ranks.npy \
   --network esm2 \
-  --output runs/rank_esm2 \
+  --output rank_esm2_run \
   --device cuda:0
 ```
 
@@ -321,7 +322,7 @@ import numpy as np
 import torch
 from oncobert.rank_encoder import RankEncoder
 
-checkpoint = torch.load("runs/rank_esm2/best.pth", map_location="cpu",
+checkpoint = torch.load("rank_esm2_run/best.pth", map_location="cpu",
                         weights_only=True)
 model = RankEncoder(**checkpoint["architecture"])
 model.load_state_dict(checkpoint["model_state_dict"], strict=True)
