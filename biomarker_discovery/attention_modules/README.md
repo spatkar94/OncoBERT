@@ -1,5 +1,17 @@
 # Cluster 2 attention-module interpretability
 
+## Analysis overview
+
+The composite below summarizes final-layer gene–gene attention modules,
+module-level integrated-gradient attribution, and mutation/co-mutation
+patterns in Cluster 2 relative to matched controls.
+
+<div align="center">
+  <img src="../../data/example_outputs/biomarker_attention_modules.png"
+       width="100%"
+       alt="Cluster 2 attention-module interpretability analysis">
+</div>
+
 The workflow is:
 
 1. `extract_attention.py`: average final-layer gene-gene attention over Cluster
