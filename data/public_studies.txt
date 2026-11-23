@@ -1,0 +1,19 @@
+# Public cBioPortal studies used by the manuscript analyses.
+msk_chord_2024
+blca_iatlas_imvigor210_2017
+gbm_columbia_2019
+skcm_dfci_2015
+skcm_mskcc_2014
+mel_ucla_2016
+nsclc_mskcc_2018
+nsclc_mskcc_2015
+tmb_mskcc_2018
+ccrcc_dfci_2019
+rcc_iatlas_immotion150_2018
+mel_iatlas_liu_2019
+paad_iatlas_prince_2022
+mel_iatlas_gide_2019
+brca_iatlas_anders_2022
+gbm_iatlas_prins_2019
+mel_iatlas_hugo_ucla_2016
+ccrcc_iatlas_choueiri_2016

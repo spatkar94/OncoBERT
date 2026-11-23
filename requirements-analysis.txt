@@ -1,0 +1,4 @@
+-r requirements.txt
+
+# Required by the MutationProjector graph-attention baseline.
+torch-geometric>=2.5,<3

@@ -1,131 +1,373 @@
-## OncoBERT - A Language Model for Decoding Cancer Mutation Patterns
-<div align = "center">
-    <img width="70%" src="imgs/logo.png">
+# OncoBERT: context-aware modeling of somatic mutations
+
+<div align="center">
+  <img width="90%" src="imgs/oncobert_outline_revised.png" alt="Revised OncoBERT model overview">
 </div>
 
-OncoBERT is a masked language model that learns contextual representations of cancer somatic mutations from large-scale clinical sequencing data. These learned vector representations:
-* **Reveal** clinically relevant mutational contexts
-* **Enable clustering** of tumor samples into distinct molecular subtypes  
-* **Enable stratification** of patient responses to treatment
+OncoBERT is a permutation invariant set transformer trained to learn rich contextual representations of somatic mutations from large-scale clinical sequencing data in a purely self-supervised fashion via masked mutation state prediction.
+## Model
 
-![](imgs/oncobert_outline.png)
+Every sample contains the same ordered vocabulary of 200 commonly profiled
+genes. For gene `g`, the input token is
 
-This repository is based on the paper **"OncoBERT: Context-Aware Modeling of Somatic Mutations for Precision Oncology"** by Patkar, et al.
-You can read the paper here: [https://doi.org/10.64898/2026.02.18.706658](https://doi.org/10.64898/2026.02.18.706658)
-
----
-## 🛠 Installation & Setup
-
-1. **Create the environment:**
-   ```bash
-   conda create -n oncobert python=3.10 -y
-   ```
-
-2. **Activate the environment:**
-   ```bash
-   conda activate oncobert
-   ```
-
-3. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-## Input Data Preparation
-Prepare somatic mutation data as a tabular dataframe where each row rempresents a tumor sample and each column represents a protein coding gene. Each entry encodes the mutation status of a gene. 1: presence of at least one non-silent mutation (i.e., missense, nonsense, frameshift, indel), 0 = wildtype, */nan = not profiled. 
+```text
+learned gene-identity embedding(g) + learned mutation-state embedding(g)
 ```
-sample_id, TP53, KRAS, EGFR, ...
-S1, 1, 0, 0
-S2, 1, 1, 0
-S3, 0, 0, 1
+
+The three mutation states are:
+
+```text
+0  WILD_TYPE
+1  MUTATED_NOT_LOF
+2  LOF
 ```
-Given somatic mutation calls from a cohort saved in mutation annotation format (MAF), run the following function to transform it into the tabular format shown above:
+
+During pretraining, 15% of state IDs (30 of 200 genes) are replaced by an
+input-only MASK embedding. Gene identity remains visible. Eight Transformer
+encoder layers predict the held-out states with unweighted cross-entropy. No
+positional embeddings are used. The final CLS vector is the sample
+representation; a patient representation is the mean of all corresponding
+sample-level CLS vectors.
+
+Default manuscript architecture:
+
+| Setting | Value |
+|---|---:|
+| Genes | 200 |
+| Mutation states | 3 |
+| Embedding dimension | 128 |
+| Transformer layers | 8 |
+| Attention heads | 8 |
+| Feed-forward dimension | 2,048 |
+| Dropout | 0.1 |
+| Mask fraction | 0.15 |
+
+## Repository layout
+
+```text
+oncobert/model.py                 canonical OncoBERT model
+oncobert/utils.py                 shared I/O and pooling utilities
+oncobert/training.py              mutation-state pretraining implementation
+oncobert/inference.py             sample/patient embedding implementation
+oncobert/rank_encoder.py          diffusion-rank ablation architecture
+oncobert/train_rank_encoder.py    rank-objective pretraining CLI
+prepare_set_transformer_data.py   prepare splits and fixed evaluation masks
+train.py                          canonical mutation-state pretraining CLI
+inference.py                      canonical embedding inference CLI
+saved_checkpoints/                released pretrained weights
+baselines/                        MutationProjector and NMF baselines
+benchmarks/                       GENIE, TCGA, CHORD, and ICI benchmarks
+ablations/                        rank and embedding-dimension studies
+biomarker_discovery/              treatment interaction and interpretation
+data/                             vocabulary, manifests, and download tools
+```
+
+## Installation
+
+Python 3.10 and PyTorch 2.7 were used for the final experiments.
+
+```bash
+git clone https://github.com/spatkar94/OncoBERT.git
+cd OncoBERT
+conda create -n oncobert python=3.10 -y
+conda activate oncobert
+pip install -r requirements.txt
+```
+
+Install the additional graph dependency for MutationProjector and the complete
+analysis collection:
+
+```bash
+pip install -r requirements-analysis.txt
+```
+
+## Pretrained model
+
+The final shared-200 checkpoint and its exact gene order are distributed in the
+repository:
+
+```text
+saved_checkpoints/oncobert_set_transformer_shared200_dim128.pth
+data/shared200_genes.txt
+```
+
+The checkpoint stores the architecture, model weights, ordered genes,
+validation metrics, and training configuration. Loading is strict:
+
 ```python
-from oncobert.utils import prepare_mutation_data
+from oncobert import OncoBERT
 
-prepare_input_data(mafpath = '/path/to/maf_file.txt', saveloc = '.', savename = 'mutation_data.csv')
-```
-## Extracting Pretrained Protein Language Model Embeddings
-To extract ESM2 protein language model embeddings for each protein coding gene, follow instructions shown [here](https://github.com/facebookresearch/esm). Finally run the following script to merge and save all embeddings into one tensor:
-```python
-from oncobert.utils import save_esm_embeddings_to_h5py
-
-save_esm_embeddings_to_h5py(embeddings_loc = '/path/to/saved/embeddings/*.pt')
+model, checkpoint = OncoBERT.from_checkpoint(
+    "saved_checkpoints/oncobert_set_transformer_shared200_dim128.pth"
+)
+model.eval()
 ```
 
-## Training
-To train OncoBERT from scratch on your own somatic mutation dataset, run the following script:
-```
-python train.py [-h] [--mut_data MUT_DATA] [--plm_embeddings PLM_EMBEDDINGS] [--save_loc SAVE_LOC] [--num_epochs NUM_EPOCHS]
-                [--context_length CONTEXT_LENGTH] [--lr LR] [--batch_size BATCH_SIZE] [--embed_dim EMBED_DIM] [--num_layers NUM_LAYERS]
-                [--num_workers NUM_WORKERS] [--mask_fraction MASK_FRACTION]
+## Input data
 
-Training script arguments
+OncoBERT expects a NumPy array with shape `samples × 200 genes`. Columns must
+match `data/shared200_genes.txt`; values must be `0`, `1`, or `2` as defined
+above. Functional annotation of raw variants is upstream of the encoder. The
+manuscript used LoGoFunc together with mutation-class rules to define LOF.
 
-options:
-  -h, --help            show this help message and exit
-  --mut_data MUT_DATA   Path to mutation data (saved in tabular csv format)
-  --plm_embeddings PLM_EMBEDDINGS
-                        Path to h5 file storing ESM2 protein language model embeddings
-  --save_loc SAVE_LOC   Path to where model weights are saved
-  --num_epochs NUM_EPOCHS
-                        Number of training epochs (default: 500)
-  --context_length CONTEXT_LENGTH
-                        Sequence/context length (default: 50)
-  --lr LR               Learning rate (default: 1e-4)
-  --batch_size BATCH_SIZE
-                        Batch size (default: 64)
-  --embed_dim EMBED_DIM
-                        Embedding dimension (default: 256)
-  --num_layers NUM_LAYERS
-                        Number of Stacked Transformer layers (default: 8)
-  --num_workers NUM_WORKERS
-                        number of workers for data loader (default: 12)
-  --mask_fraction MASK_FRACTION
-                        fraction of tokens to be masked during training (default: 0.2)
+Sample metadata is a CSV containing:
+
+```csv
+sample_id,patient_id
+SAMPLE_001,PATIENT_001
+SAMPLE_002,PATIENT_001
+SAMPLE_003,PATIENT_002
 ```
+
+Multiple samples from one patient are allowed. They are kept in the same data
+split and averaged only when a patient-level representation is requested.
+
+### Prepare patient-disjoint splits
+
+```bash
+python prepare_set_transformer_data.py \
+  --states functional_states.npy \
+  --metadata sample_metadata.csv \
+  --genes data/shared200_genes.txt \
+  --output prepared/shared200
+```
+
+This validates the matrix, creates patient-disjoint 80/10/10
+training/validation/test splits, and generates fixed 15% masks for validation
+and testing. The prepared directory contains:
+
+```text
+functional_states.npy
+profiles.npz
+validation_masks.npz
+test_masks.npz
+preparation_summary.json
+```
+
+## Pretraining
+
+```bash
+python train.py \
+  --prepared prepared/shared200 \
+  --output runs/oncobert \
+  --device cuda:0 \
+  --epochs 100 \
+  --batch-size 64
+```
+
+Important defaults reproduce the final protocol: dimension 128, eight layers,
+eight heads, 15% uniform masking, AdamW with learning rate `1e-4`, and early
+stopping on fixed-mask validation cross-entropy. Use `--resume` to continue
+from `latest.pth`.
+
+The run directory contains:
+
+```text
+best.pth                  minimum validation-loss checkpoint
+latest.pth                resumable training state
+config.json               architecture and protocol
+history.json              epoch history
+epoch_metrics.csv         tabular learning curves
+test_metrics.json         held-out reconstruction metrics
+embeddings.h5             sample CLS and patient-mean representations
+pretraining_summary.json  final run summary
+```
+
+Reported reconstruction metrics include three-state macro AUPRC, state top-1
+accuracy, balanced accuracy, binary mutation micro AUPRC, and per-gene binary
+macro AUPRC.
 
 ## Inference
-To generate contextual embeddings of somatic mutations and optionally classify tumor samples into distinct mutation subtypes, run the following scripts:
-```
-python inference.py [-h] [--mut_data MUT_DATA] [--plm_embeddings PLM_EMBEDDINGS] [--checkpoint CHECKPOINT] [--save_loc SAVE_LOC]
-                    [--savename SAVENAME] [--context_length CONTEXT_LENGTH] [--embed_dim EMBED_DIM] [--num_layers NUM_LAYERS]
-                    [--classifier_chkpt CLASSIFIER_CHKPT]
 
-Inference script arguments
-
-options:
-  -h, --help            show this help message and exit
-  --mut_data MUT_DATA   Path to mutation data (saved in tabular csv format)
-  --plm_embeddings PLM_EMBEDDINGS
-                        Path to h5 file storing ESM2 protein language model embeddings
-  --checkpoint CHECKPOINT
-                        Path to checkpoint file where OncoBERT weights are saved
-  --save_loc SAVE_LOC   Location where OncoBERT embeddings will be saved
-  --savename SAVENAME   name of anndata file holding all OncoBERT-generated embeddings (e.g., bert_embeddings.h5)
-  --context_length CONTEXT_LENGTH
-                        sequence/context length (default: 50)
-  --embed_dim EMBED_DIM
-                        embedding dimensions (default: 256)
-  --num_layers NUM_LAYERS
-                        number of transformer blocks (default: 8)
-  --classifier_chkpt CLASSIFIER_CHKPT
-                        path to MLP classifier weights (default: None)
+```bash
+python inference.py \
+  --states functional_states.npy \
+  --metadata sample_metadata.csv \
+  --checkpoint saved_checkpoints/oncobert_set_transformer_shared200_dim128.pth \
+  --output oncobert_embeddings.h5 \
+  --device cuda:0
 ```
-## Questions and Issues
-If you find any bugs or have any questions about this code please contact: [Sushant Patkar](patkar.sushant@nih.gov)
+
+The output stores unmasked sample CLS embeddings, patient-level means, patient
+sample counts, sample/patient identifiers, and the checkpoint gene order.
+
+## Diffusion-rank ablations
+
+The three rank encoders share the OncoBERT backbone but replace mutation-state
+targets with ranks precomputed by diffusion over weighted ESM2, GenePT, or
+STRING networks. Each row of the rank matrix must be a complete permutation of
+`1..200` (or zero-based `0..199`).
+
+### External network resources
+
+The external embedding and interaction files are not committed because of
+their size. Download them from their original providers:
+
+| Rank network | Resource | Manuscript input |
+|---|---|---|
+| ESM2 | [ESM Metagenomic Atlas bulk-download instructions](https://github.com/Biohub/esm-archive/blob/main/scripts/atlas/README.md) | Mean-pooled, 1,280-dimensional ESM2 protein vectors aligned to gene symbols |
+| GenePT | [GenePT embeddings, Zenodo record 10833191](https://zenodo.org/records/10833191) | `GenePT_gene_embedding_ada_text.pickle` |
+| STRING | [STRING human downloads](https://string-db.org/cgi/download?species=Homo+sapiens) | Human physical links and protein-to-gene metadata |
+
+#### ESM2
+
+The ESM Atlas repository provides URL manifests under
+`scripts/atlas/v2023_02/full/esm2_embeddings/` and recommends `aria2c` or
+`s5cmd` for bulk transfer. For example:
+
+```bash
+git clone https://github.com/Biohub/esm-archive.git external/esm-archive
+cd external/esm-archive/scripts/atlas
+aria2c \
+  --dir=/path/to/esm2_atlas \
+  --input-file=v2023_02/full/esm2_embeddings.txt
+```
+
+Atlas records use protein-sequence identifiers rather than HGNC gene symbols.
+Map each shared-200 gene to its canonical protein sequence before selecting an
+embedding. The manuscript cache used one finite, nonzero 1,280-dimensional
+vector per gene in the exact order of `data/shared200_genes.txt`. If a canonical
+human sequence is absent from the Atlas, generate its mean-pooled embedding
+with the corresponding 1,280-dimensional ESM2 model rather than substituting a
+different gene or isoform.
+
+#### GenePT
+
+Download and unpack the version-2 Zenodo archive:
+
+```bash
+mkdir -p external/genept
+wget -O external/genept/GenePT_emebdding_v2.zip \
+  'https://zenodo.org/records/10833191/files/GenePT_emebdding_v2.zip?download=1'
+unzip external/genept/GenePT_emebdding_v2.zip -d external/genept
+```
+
+Use `GenePT_gene_embedding_ada_text.pickle`, whose dictionary keys are
+upper-case gene symbols. Select the 200 shared genes in vocabulary order and
+fail rather than silently imputing a missing gene.
+
+#### STRING
+
+For exact manuscript provenance, use the
+[archived STRING v12.0 download page](https://version-12-0.string-db.org/cgi/download?species=Homo+sapiens);
+the current STRING page may expose a newer version. Download:
+
+```text
+9606.protein.physical.links.v12.0.txt.gz
+9606.protein.info.v12.0.txt.gz
+```
+
+The first file supplies physical protein links and `combined_score`; the second
+maps STRING protein IDs to preferred gene names. Restrict both endpoints to the
+shared-200 vocabulary, collapse duplicate protein-level links to a gene pair by
+their maximum score, use `combined_score / 1000` as an undirected edge weight,
+remove self-edges, and retain unmapped genes as isolates. No additional STRING
+confidence threshold was applied in the final weighted-network experiment.
+
+### From external resources to rank matrices
+
+For ESM2 and GenePT, L2-normalize the aligned gene vectors and construct the
+undirected adjacency matrix
+
+```text
+W[i,j] = max(cosine(embedding[i], embedding[j]), 0),  i != j
+W[i,i] = 0
+```
+
+For all three networks, symmetrically normalize the adjacency,
+`S = D^(-1/2) W D^(-1/2)`, and run random walk with restart from each sample's
+binary nonsynonymous mutation profile:
+
+```text
+f(t+1) = 0.5 * S * f(t) + 0.5 * mutation_profile
+```
+
+Rank all 200 genes by decreasing converged diffusion score. Resolve exact ties
+stably in `data/shared200_genes.txt` order. Save the resulting samples-by-200
+integer matrix as `esm2_ranks.npy`, `genept_ranks.npy`, or
+`string_ranks.npy`. Network resources determine the rank targets only; they are
+not loaded by `train_rank_encoder.py`, which deliberately consumes the frozen,
+auditable rank matrix.
+
+### Rank-encoder pretraining
+
+```bash
+python -m oncobert.train_rank_encoder \
+  --prepared prepared/shared200 \
+  --ranks prepared/shared200/esm2_ranks.npy \
+  --network esm2 \
+  --output runs/rank_esm2 \
+  --device cuda:0
+```
+
+Set `--network genept` or `--network string` with the corresponding precomputed
+rank matrix. The script logs masked-rank cross-entropy, top-1/top-5/top-10 rank
+accuracy, MAE, RMSE, and CLS embeddings. It also exports unmasked sample CLS
+embeddings and patient means to `embeddings.h5`, so a completed pretraining run
+already performs inference on every prepared sample.
+
+### Rank-encoder inference on another cohort
+
+Construct the new cohort's binary nonsynonymous shared-200 profiles and compute
+ranks with the *same* saved network, restart probability, gene order, and tie
+policy used for pretraining. Load `best.pth` strictly and pass zero-based ranks
+to the model:
+
+```python
+import numpy as np
+import torch
+from oncobert.rank_encoder import RankEncoder
+
+checkpoint = torch.load("runs/rank_esm2/best.pth", map_location="cpu",
+                        weights_only=True)
+model = RankEncoder(**checkpoint["architecture"])
+model.load_state_dict(checkpoint["model_state_dict"], strict=True)
+model.eval()
+
+ranks = np.load("new_cohort_esm2_ranks.npy", allow_pickle=False)
+if ranks.min() == 1:              # convert 1..200 to model IDs 0..199
+    ranks = ranks - 1
+with torch.inference_mode():
+    _, sample_embeddings = model(torch.from_numpy(ranks).long())
+```
+
+Average `sample_embeddings` only when patient-level inference is required and a
+patient has multiple eligible baseline samples. Do not recompute or refit the
+network on an evaluation cohort.
+
+## Manuscript analyses
+
+Each analysis directory contains a README describing its inputs and command.
+The complete figure-to-script map is
+`data/manifests/figure_workflows.json`. Large or access-controlled raw cohorts
+are not redistributed; acquisition and environment variables are documented
+in `data/README.md` and `data/datasets.json`.
+
+Download public cBioPortal studies with:
+
+```bash
+python data/download_cbioportal.py --extract
+```
+
+Verify source compilation, required assets, the checkpoint architecture, and
+the ordered gene vocabulary with:
+
+```bash
+python verify_repository.py
+python -m unittest -v tests.test_set_transformer
+```
 
 ## Citation
-If you found OncoBERT useful in your own work, please consider citing:
-```
-@article {Patkar2026.02.18.706658,
-	author = {Patkar, Sushant and Auslander, Noam and Harmon, Stephanie and Choyke, Peter and Turkbey, Baris},
-	title = {OncoBERT: Context-Aware Modeling of Somatic Mutations for Precision Oncology},
-	elocation-id = {2026.02.18.706658},
-	year = {2026},
+
+```bibtex
+@article{Patkar2026OncoBERT,
+  author = {Patkar, Sushant and Auslander, Noam and Harmon, Stephanie and
+            Choyke, Peter and Turkbey, Baris},
+  title = {OncoBERT: Context-Aware Modeling of Somatic Mutations for Precision Oncology},
+  year = {2026},
   doi = {10.64898/2026.02.18.706658},
-	publisher = {Cold Spring Harbor Laboratory},
   journal = {bioRxiv}
 }
 ```
 
+Questions and issues: [patkar.sushant@nih.gov](mailto:patkar.sushant@nih.gov)

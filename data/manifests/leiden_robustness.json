@@ -1,0 +1,30 @@
+{
+  "complete": true,
+  "reference_cluster": "2",
+  "reference_resolution": 0.5,
+  "reference_seed": 42,
+  "resolutions": [
+    0.1,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "seeds_per_resolution": 20,
+  "runs": 100,
+  "cluster_correspondence": "maximum patient-level Jaccard overlap in GENIE",
+  "transfer": "StandardScaler + class-balanced binary RidgeClassifier(alpha=1)",
+  "survival_model": "saved overlap-weighted NSCLC ICI-versus-non-ICI Cox treatment-by-cluster interaction",
+  "validation": {
+    "transfer_cutoff": 0.34450745582580566,
+    "heldout_balanced_accuracy": 0.9372458663708387,
+    "heldout_jaccard": 0.804419525065963,
+    "heldout_precision": 0.8947175348495965,
+    "heldout_recall": 0.8885245901639345,
+    "chord_binary_vs_original_multiclass_jaccard": 0.7222222222222222,
+    "chord_binary_vs_original_multiclass_precision": 0.7709611451942741,
+    "chord_binary_vs_original_multiclass_recall": 0.9195121951219513,
+    "original_cluster2_chord_patients": 410,
+    "binary_transfer_cluster2_chord_patients": 489
+  }
+}

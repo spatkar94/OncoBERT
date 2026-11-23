@@ -1,0 +1,16 @@
+{
+  "impact_pan_cancer": {
+    "patients": 1306,
+    "events": 612,
+    "cluster2_patients": 195,
+    "hazard_ratio": 0.5606863281303478,
+    "ci_low": 0.42789946864205025,
+    "ci_high": 0.7346799460862863,
+    "cox_p": 2.7186632139726883e-05,
+    "logrank_p": 1.9232379762378457e-05
+  },
+  "impact_overlap_exclusion": "All MSK-IMPACT NSCLC patients",
+  "response_cohorts": 14,
+  "response_patients": 1036,
+  "response_definition": "CR/PR or harmonized responder label"
+}

@@ -1,0 +1,54 @@
+{
+  "genie_chord_os_benchmark": {
+    "script": "benchmarks/genie_chord_os/build_figure.py",
+    "reference_output": "data/example_outputs/benchmark_genie_chord_os.png"
+  },
+  "tcga_benchmark": {
+    "script": "benchmarks/tcga/build_figure.py",
+    "reference_output": "data/example_outputs/benchmark_tcga.png"
+  },
+  "nsclc_ici_os_benchmark": {
+    "script": "benchmarks/nsclc_ici_os/benchmark.py",
+    "reference_output": "data/example_outputs/benchmark_nsclc_ici_os.png"
+  },
+  "cancer_type_overlay": {
+    "script": "benchmarks/representation_diagnostics/plot_overlays.py",
+    "reference_output": "data/example_outputs/overlay_cancer_type.png"
+  },
+  "institution_overlay": {
+    "script": "benchmarks/representation_diagnostics/plot_overlays.py",
+    "reference_output": "data/example_outputs/overlay_institution.png"
+  },
+  "panel_source_overlay": {
+    "script": "benchmarks/representation_diagnostics/plot_overlays.py",
+    "reference_output": "data/example_outputs/overlay_panel_source.png"
+  },
+  "rank_vs_set_ablation": {
+    "script": "ablations/rank_vs_set/build_figure.py",
+    "reference_output": "data/example_outputs/ablation_rank_vs_set.png"
+  },
+  "embedding_dimension_ablation": {
+    "script": "ablations/embedding_dimension/build_figure.py",
+    "reference_output": "data/example_outputs/ablation_embedding_dimension.png"
+  },
+  "cluster2_nsclc_interaction": {
+    "script": "biomarker_discovery/treatment_cluster_interaction/build_figure.py",
+    "reference_output": "data/example_outputs/biomarker_cluster2_nsclc.png"
+  },
+  "cross_cancer_generalizability": {
+    "script": "biomarker_discovery/cross_cancer/build_figure.py",
+    "reference_output": "data/example_outputs/biomarker_cross_cancer.png"
+  },
+  "leiden_robustness": {
+    "script": "biomarker_discovery/leiden_robustness/build_figure.py",
+    "reference_output": "data/example_outputs/biomarker_leiden_robustness.png"
+  },
+  "attention_module_interpretability": {
+    "script": "biomarker_discovery/attention_modules/build_figure.py",
+    "reference_output": "data/example_outputs/biomarker_attention_modules.png"
+  },
+  "normalized_laplacian_eigengap": {
+    "script": "biomarker_discovery/normalized_laplacian/build_figure.py",
+    "reference_output": "data/example_outputs/biomarker_eigengap.png"
+  }
+}

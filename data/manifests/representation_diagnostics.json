@@ -1,0 +1,22 @@
+{
+  "complete": true,
+  "models": [
+    "nmf",
+    "gat",
+    "set"
+  ],
+  "titles": {
+    "nmf": "NMF",
+    "gat": "MutationProjector (GAT)",
+    "set": "OncoBERT (Set Transformer)"
+  },
+  "sources": {
+    "nmf": "${ONCOBERT_EXPERIMENT_ROOT}/experiments/nmf_gat_set_merged_diagnostics_shared200_v20/nmf_projection/nmf_k13/patients.h5ad",
+    "gat": "${ONCOBERT_EXPERIMENT_ROOT}/experiments/candidate_mutation_projector_dim10_mean_shared200_v20/evaluation/representation_diagnostics/mutation_projector_gat10_three_state/patients.h5ad",
+    "set": "${ONCOBERT_EXPERIMENT_ROOT}/experiments/candidate_three_state_logofunc_shared200_v20/evaluation/representation/three_state_logofunc/patients.h5ad"
+  },
+  "patients": 115984,
+  "heldout_variance_patients": 11188,
+  "variance_protocol": "native dimensions; trace OLS R2 for log1p TMB; multivariate eta2 for categorical labels; held-out patients only",
+  "projection_protocol": "PCA top min(50, native_dim), then UMAP n_neighbors15 min_dist0.3 euclidean seed42"
+}

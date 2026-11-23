@@ -1,0 +1,7 @@
+data/raw/
+data/prepared/
+data/derived/
+artifacts/
+reproduced_figures/
+__pycache__/
+*.py[cod]

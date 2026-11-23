@@ -1,0 +1,25 @@
+{
+  "panels": {
+    "A": "MSK-CHORD ICI-versus-non-ICI treatment-by-cluster interaction forest",
+    "B": "MSK-CHORD cluster 2 vs remaining, stratified by ICI exposure",
+    "C": "MSK-CHORD cluster 7 vs remaining, stratified by ICI exposure",
+    "D": "MSK-CHORD ICI-index-treated multivariable Cox model plus PD-L1 subgroup-specific Cluster 2 KM curves",
+    "E": "Non-overlapping external NSCLC cohorts: objective response and pooled PFS"
+  },
+  "external_patient_count": 123,
+  "external_cohorts": {
+    "mixed_allen_2018": 43,
+    "nsclc_mskcc_2015": 16,
+    "nsclc_mskcc_2018": 64
+  },
+  "pooled_pfs": {
+    "patients": 123,
+    "events": 66,
+    "cluster2_patients": 19,
+    "cluster2_events": 9,
+    "hazard_ratio": 0.4165095697353255,
+    "ci_low": 0.20139135883905765,
+    "ci_high": 0.8614084669826527,
+    "p_value": 0.018159316311813906
+  }
+}

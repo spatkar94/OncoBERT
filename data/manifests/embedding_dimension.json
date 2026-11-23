@@ -1,0 +1,75 @@
+{
+  "complete": true,
+  "dimensions": [
+    32,
+    64,
+    128,
+    256
+  ],
+  "best_dimension_by_per_gene_three_state_macro_auprc": 128,
+  "best_per_gene_three_state_macro_auprc": 0.42621017495356495,
+  "primary_metric": "mean across 200 genes of each gene's mean supported state-specific AP (WT, mutated-not-LOF, LOF)",
+  "secondary_metric": "unweighted mean of 200 gene-specific AP values for WT versus any mutation",
+  "global_three_state_metric": "three_state_macro_auprc retains the original trainer metric: AP per state pooled across genes, then mean across three states",
+  "architecture_control": "8 layers; 8 heads; FFN width 2048; dropout 0.1; only embedding dimension varies",
+  "training_control": "seed42; uniform15% masks; fixed validation/test masks; AdamW; lr1e-4; weight_decay1e-4; max100 epochs; patience20",
+  "reused_128d_run": true,
+  "results": [
+    {
+      "embedding_dim": 32,
+      "per_gene_three_state_macro_auprc": 0.42242275592681044,
+      "per_gene_three_state_bootstrap_95ci_lower": 0.4145864240058278,
+      "per_gene_three_state_bootstrap_95ci_upper": 0.4306220552442761,
+      "binary_mutation_macro_auprc": 0.19154562719280008,
+      "gene_bootstrap_95ci_lower": 0.17562484659213545,
+      "gene_bootstrap_95ci_upper": 0.2075866129325552,
+      "three_state_macro_auprc": 0.4746224213913828,
+      "mutation_micro_auprc": 0.28931023515325377,
+      "reconstruction_ce": 0.1140339909276627,
+      "best_epoch": 98,
+      "source": "${ONCOBERT_EXPERIMENT_ROOT}/experiments/three_state_set_dim_ablation_shared200_v20/runs/dim32_seed42"
+    },
+    {
+      "embedding_dim": 64,
+      "per_gene_three_state_macro_auprc": 0.4254149492642443,
+      "per_gene_three_state_bootstrap_95ci_lower": 0.4177466718300426,
+      "per_gene_three_state_bootstrap_95ci_upper": 0.4333467606669121,
+      "binary_mutation_macro_auprc": 0.196764281648492,
+      "gene_bootstrap_95ci_lower": 0.18107263889214859,
+      "gene_bootstrap_95ci_upper": 0.21295502685949672,
+      "three_state_macro_auprc": 0.4779253689440603,
+      "mutation_micro_auprc": 0.2948125698335053,
+      "reconstruction_ce": 0.1134657812721258,
+      "best_epoch": 98,
+      "source": "${ONCOBERT_EXPERIMENT_ROOT}/experiments/three_state_set_dim_ablation_shared200_v20/runs/dim64_seed42"
+    },
+    {
+      "embedding_dim": 128,
+      "per_gene_three_state_macro_auprc": 0.42621017495356495,
+      "per_gene_three_state_bootstrap_95ci_lower": 0.41816277041408595,
+      "per_gene_three_state_bootstrap_95ci_upper": 0.4345822718327762,
+      "binary_mutation_macro_auprc": 0.19730743973553497,
+      "gene_bootstrap_95ci_lower": 0.18174220829103988,
+      "gene_bootstrap_95ci_upper": 0.213556912643032,
+      "three_state_macro_auprc": 0.47809708410495344,
+      "mutation_micro_auprc": 0.2963646756235306,
+      "reconstruction_ce": 0.11342980814216393,
+      "best_epoch": 60,
+      "source": "${ONCOBERT_EXPERIMENT_ROOT}/experiments/candidate_three_state_logofunc_shared200_v20/runs/three_state_seed42"
+    },
+    {
+      "embedding_dim": 256,
+      "per_gene_three_state_macro_auprc": 0.42404556607555277,
+      "per_gene_three_state_bootstrap_95ci_lower": 0.4163360472487773,
+      "per_gene_three_state_bootstrap_95ci_upper": 0.43228668472570847,
+      "binary_mutation_macro_auprc": 0.19435775930948004,
+      "gene_bootstrap_95ci_lower": 0.17898477026315,
+      "gene_bootstrap_95ci_upper": 0.21011253906323424,
+      "three_state_macro_auprc": 0.47724128252852566,
+      "mutation_micro_auprc": 0.29344415294934334,
+      "reconstruction_ce": 0.1135767590308741,
+      "best_epoch": 50,
+      "source": "${ONCOBERT_EXPERIMENT_ROOT}/experiments/three_state_set_dim_ablation_shared200_v20/runs/dim256_seed42"
+    }
+  ]
+}

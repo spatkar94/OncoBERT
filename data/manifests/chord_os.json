@@ -1,0 +1,34 @@
+{
+  "complete": true,
+  "models": [
+    "nmf_k13",
+    "mutation_projector_gat10_three_state",
+    "three_state_logofunc",
+    "exact_chord_tmb"
+  ],
+  "titles": [
+    "NMF",
+    "MutationProjector (GAT)",
+    "OncoBERT (Set Transformer)",
+    "Exact CHORD TMB"
+  ],
+  "cancers": [
+    "Non-Small Cell Lung Cancer",
+    "Colorectal Cancer",
+    "Breast Cancer",
+    "Pancreatic Cancer",
+    "Prostate Cancer"
+  ],
+  "folds": 5,
+  "protocol": "cancer-specific 5x3 nested CV; raw stored values; Coxnet normalize=False; no scaling/normalization/PCA",
+  "patient_representation": "arithmetic mean of all eligible day-zero sample embeddings per patient; post-baseline specimens excluded",
+  "nmf_rank": 13,
+  "nmf_selection": "maximum held-out masked mutation macro AUPRC over K=2..30",
+  "fold_sha256": "a115cfb893a335ccf7647574fbfd3bc803368beac28f8ac133465096a782b744",
+  "sources": {
+    "nmf": "${ONCOBERT_EXPERIMENT_ROOT}/experiments/chord_os_nmf13_three_state_gat_set_shared200_v20/benchmark/groups",
+    "mutation_projector": "${ONCOBERT_EXPERIMENT_ROOT}/experiments/candidate_mutation_projector_dim10_mean_shared200_v20/evaluation/chord_os/benchmark/raw/plots/all_fold_metrics.csv",
+    "set_transformer": "${ONCOBERT_EXPERIMENT_ROOT}/experiments/candidate_three_state_logofunc_shared200_v20/evaluation/chord_os/benchmark/raw/plots/all_fold_metrics.csv",
+    "exact_chord_tmb": "${ONCOBERT_EXPERIMENT_ROOT}/experiments/focused_three_state_rank_gat_set_benchmark_20261030/baseline_evaluation/benchmark/groups"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "notes": "Raw clinical cohorts and model checkpoints are intentionally not committed. Paths may be overridden with the environment variables documented in data/README.md.",
+  "datasets": {
+    "aacr_genie_v20": {
+      "purpose": "Shared-200 self-supervised pretraining and GENIE retrieval benchmarks",
+      "source": "AACR Project GENIE public release v20",
+      "source_page": "https://www.aacr.org/professionals/research/aacr-project-genie/",
+      "access": "Download under the GENIE public-data terms; no unauthenticated direct URL is assumed.",
+      "expected_directory": "data/raw/genie"
+    },
+    "tcga_mc3": {
+      "purpose": "TCGA representation and retrieval benchmarks",
+      "source": "TCGA MC3 public mutation calls and PanCanAtlas clinical annotations",
+      "source_page": "https://gdc.cancer.gov/about-data/publications/mc3-2017",
+      "expected_files": [
+        "data/raw/tcga/mc3.v0.2.8.PUBLIC.maf",
+        "data/raw/tcga/tcga_pancan_clinical_data.csv"
+      ]
+    },
+    "msk_chord": {
+      "purpose": "Overall-survival and NSCLC ICI-index benchmarks",
+      "source": "cBioPortal MSK-CHORD 2024",
+      "download_url": "https://datahub.assets.cbioportal.org/msk_chord_2024.tar.gz",
+      "expected_directory": "data/raw/msk_chord_2024"
+    },
+    "msk_impact_ici": {
+      "purpose": "Cross-cancer ICI generalizability",
+      "source": "TMB and Immunotherapy (MSK, Nat Genet 2019)",
+      "download_url": "https://datahub.assets.cbioportal.org/tmb_mskcc_2018.tar.gz",
+      "expected_directory": "data/raw/tmb_mskcc_2018"
+    },
+    "immunotherapy_validation": {
+      "purpose": "External objective-response and PFS validation",
+      "source": "Public cBioPortal immunotherapy studies listed in data/immunotherapy_studies.txt",
+      "expected_directory": "data/raw/cbioportal_immunotherapy"
+    }
+  }
+}

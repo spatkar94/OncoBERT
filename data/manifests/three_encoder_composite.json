@@ -1,0 +1,45 @@
+{
+  "complete": true,
+  "canvas_pixels": [
+    6000,
+    4550
+  ],
+  "dpi": 300,
+  "panels": {
+    "A": {
+      "analysis": "Mutation-state retrieval by mutation-frequency bin",
+      "source": "${ONCOBERT_WORK_ROOT}/artifacts/three_encoder_composite_benchmark/source_panels_large_type/panel_a_mutation_state_large_type.png",
+      "random_guess_auprc_by_frequency_bin": {
+        ">10%": 0.190713,
+        "5-10%": 0.062992,
+        "<5%": 0.019412
+      },
+      "random_guess_definition": "mean gene-specific positive-class prevalence within each frequency bin"
+    },
+    "B": {
+      "analysis": "GENIE Broad Cancer Type Retrieval",
+      "source": "${ONCOBERT_WORK_ROOT}/artifacts/three_encoder_composite_benchmark/source_panels_large_type/panel_b_broad_large_type.png"
+    },
+    "C": {
+      "analysis": "GENIE Detailed Cancer Type Retrieval",
+      "source": "${ONCOBERT_WORK_ROOT}/artifacts/three_encoder_composite_benchmark/source_panels_large_type/panel_c_detailed_large_type.png"
+    },
+    "D": {
+      "analysis": "GENIE percent embedding variance explained",
+      "source": "${ONCOBERT_WORK_ROOT}/artifacts/three_encoder_composite_benchmark/source_panels_large_type/panel_d_variance_explained_large_type.png"
+    },
+    "E": {
+      "analysis": "MSK-CHORD overall-survival Harrell C-index benchmark",
+      "source": "${ONCOBERT_WORK_ROOT}/artifacts/slide02_chord_os/plots/chord_os_four_model_benchmark.png"
+    },
+    "F": {
+      "analysis": "MSK-CHORD time-dependent AUROC benchmark",
+      "source": "${ONCOBERT_WORK_ROOT}/artifacts/slide02_chord_os/plots/chord_os_four_model_benchmark.png"
+    }
+  },
+  "outputs": [
+    "${ONCOBERT_WORK_ROOT}/artifacts/three_encoder_composite_benchmark/three_encoder_retrieval_and_chord_os_composite.png",
+    "${ONCOBERT_WORK_ROOT}/artifacts/three_encoder_composite_benchmark/three_encoder_retrieval_and_chord_os_composite.pdf",
+    "${ONCOBERT_WORK_ROOT}/artifacts/three_encoder_composite_benchmark/three_encoder_retrieval_and_chord_os_composite.tiff"
+  ]
+}
