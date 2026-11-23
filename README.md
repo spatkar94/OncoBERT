@@ -1,4 +1,4 @@
-# OncoBERT
+# 🧬 OncoBERT
 OncoBERT is a general-purpose foundation model that learns broad contextual representations of somatic mutations through self-supervised learning on massive unlabeled genomic sequencing datasets.  
 
 <br><br>
@@ -8,7 +8,7 @@ OncoBERT is a general-purpose foundation model that learns broad contextual repr
 </div>
 
 
-## Model
+## 🧠 Model
 
 Every sample contains the same set of 200 commonly profiled
 genes. For gene `g`, the input token is
@@ -45,7 +45,7 @@ Default architecture:
 | Dropout | 0.1 |
 | Mask fraction | 0.15 |
 
-## Repository layout
+## 🗂️ Repository layout
 
 ```text
 oncobert/model.py                 OncoBERT set transformer implementation
@@ -65,7 +65,7 @@ biomarker_discovery/              treatment interaction and interpretation
 data/                             vocabulary, manifests, and download tools
 ```
 
-## Installation
+## ⚙️ Installation
 
 Python 3.10 and PyTorch 2.7 were used for the final experiments.
 
@@ -84,7 +84,7 @@ analysis collection:
 pip install -r requirements-analysis.txt
 ```
 
-## Pretrained model
+## 📦 Pretrained model
 
 The final shared-200 checkpoint and its exact gene order are distributed in the
 repository:
@@ -106,7 +106,7 @@ model, checkpoint = OncoBERT.from_checkpoint(
 model.eval()
 ```
 
-## Input data
+## 📥 Input data
 
 OncoBERT expects a NumPy array with shape `samples × 200 genes`. Columns must
 match `data/shared200_genes.txt`; values must be `0`, `1`, or `2` as defined
@@ -147,7 +147,7 @@ test_masks.npz
 preparation_summary.json
 ```
 
-## Pretraining
+## 🚀 Pretraining
 
 ```bash
 python train.py \
@@ -181,7 +181,7 @@ Reported reconstruction metrics include three-state macro AUPRC, state top-1
 accuracy, balanced accuracy, binary mutation micro AUPRC, and per-gene binary
 macro AUPRC.
 
-## Inference
+## 🔍 Inference
 
 ```bash
 python inference.py \
@@ -202,7 +202,7 @@ targets with ranks precomputed by diffusion over weighted ESM2, GenePT, or
 STRING networks. Each row of the rank matrix must be a complete permutation of
 `1..200` (or zero-based `0..199`).
 
-### External network resources
+### 🌐 External network resources
 
 The external embedding and interaction files are not committed because of
 their size. Download them from their original providers:
@@ -268,7 +268,7 @@ their maximum score, use `combined_score / 1000` as an undirected edge weight,
 remove self-edges, and retain unmapped genes as isolates. No additional STRING
 confidence threshold was applied in the final weighted-network experiment.
 
-### From external resources to rank matrices
+### 🔄 From external resources to rank matrices
 
 For ESM2 and GenePT, L2-normalize the aligned gene vectors and construct the
 undirected adjacency matrix
@@ -339,7 +339,7 @@ Average `sample_embeddings` only when patient-level inference is required and a
 patient has multiple eligible baseline samples. Do not recompute or refit the
 network on an evaluation cohort.
 
-## Manuscript analyses
+## 📊 Manuscript analyses
 
 Each analysis directory contains a README describing its inputs and command.
 The complete figure-to-script map is
@@ -361,7 +361,7 @@ python verify_repository.py
 python -m unittest -v tests.test_set_transformer
 ```
 
-## Citation
+## 📚 Citation
 
 ```bibtex
 @article{Patkar2026OncoBERT,
