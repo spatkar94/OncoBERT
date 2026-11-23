@@ -45,6 +45,25 @@ Default architecture:
 | Dropout | 0.1 |
 | Mask fraction | 0.15 |
 
+## Repository layout
+
+```text
+oncobert/model.py                 OncoBERT set transformer implementation
+oncobert/utils.py                 shared I/O and pooling utilities
+oncobert/training.py              masked mutation-state pretraining implementation
+oncobert/inference.py             sample/patient embedding inference
+oncobert/rank_encoder.py          diffusion-rank ablation architecture
+oncobert/train_rank_encoder.py    rank-objective pretraining CLI
+prepare_set_transformer_data.py   prepare splits and fixed evaluation masks
+train.py                          mutation-state pretraining CLI
+inference.py                      embedding inference CLI
+saved_checkpoints/                released pretrained weights
+baselines/                        MutationProjector and NMF baselines
+benchmarks/                       GENIE, TCGA, CHORD, and ICI benchmarks
+ablations/                        rank and embedding-dimension studies
+biomarker_discovery/              treatment interaction and interpretation
+data/                             vocabulary, manifests, and download tools
+```
 
 ## Installation
 
